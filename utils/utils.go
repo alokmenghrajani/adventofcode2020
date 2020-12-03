@@ -34,6 +34,17 @@ func Readfile(day int) []string {
 	return lines
 }
 
+func Grid(input []string) [][]byte {
+	rows := len(input)
+
+	r := make([][]byte, rows)
+	for i := range r {
+		r[i] = []byte(input[i])
+	}
+
+	return r
+}
+
 func StringsToInts(input []string) []int {
 	numbers := make([]int, len(input))
 	for i, line := range input {
