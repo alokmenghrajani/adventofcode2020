@@ -1,14 +1,19 @@
 package day03
 
-import "github.com/alokmenghrajani/adventofcode2020/utils"
+import (
+	"github.com/alokmenghrajani/adventofcode2020/utils"
+	"strings"
+)
 
-func Part1(input []string) uint {
-	grid := utils.Grid(input)
+func Part1(input string) uint {
+	lines := strings.Split(input, "\n")
+	grid := utils.Grid(lines)
 	return collisions(grid, 3, 1)
 }
 
-func Part2(input []string) uint {
-	grid := utils.Grid(input)
+func Part2(input string) uint {
+	lines := strings.Split(input, "\n")
+	grid := utils.Grid(lines)
 	deltas := [][]int{
 		{1, 1},
 		{3, 1},

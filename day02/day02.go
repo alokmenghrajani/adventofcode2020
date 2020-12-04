@@ -6,7 +6,9 @@ import (
 	"strings"
 )
 
-func Part1(input []string) int {
+func Part1(input string) int {
+	lines := strings.Split(input, "\n")
+
 	type line struct {
 		Min int
 		Max int
@@ -17,7 +19,7 @@ func Part1(input []string) int {
 
 	valid := 0
 
-	for _, l := range input {
+	for _, l := range lines {
 		var match line
 		utils.ParseToStruct(re, l, &match)
 
@@ -29,7 +31,9 @@ func Part1(input []string) int {
 	return valid
 }
 
-func Part2(input []string) int {
+func Part2(input string) int {
+	lines := strings.Split(input, "\n")
+
 	type line struct {
 		Offset1 int
 		Offset2 int
@@ -39,7 +43,7 @@ func Part2(input []string) int {
 	re := regexp.MustCompile(`(\d+)-(\d+) (.): (.*)`)
 
 	valid := 0
-	for _, l := range input {
+	for _, l := range lines {
 		var match line
 		utils.ParseToStruct(re, l, &match)
 

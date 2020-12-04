@@ -17,21 +17,17 @@ func PanicOnErr(err error) {
 	}
 }
 
-func Readfile(day int) []string {
+func Readfile(day int) string {
 	filename := fmt.Sprintf("day%02d/input.txt", day)
 	file, err := os.Open(filename)
 	PanicOnErr(err)
 	defer file.Close()
 
 	reader := bufio.NewReader(file)
-	contents, _ := ioutil.ReadAll(reader)
+	contents, err := ioutil.ReadAll(reader)
+	PanicOnErr(err)
 
-	lines := strings.Split(string(contents), "\n")
-	if lines[len(lines)-1] == "" {
-		lines = lines[:len(lines)-1]
-	}
-
-	return lines
+	return strings.TrimSuffix(string(contents), "\n")
 }
 
 func Grid(input []string) [][]byte {
