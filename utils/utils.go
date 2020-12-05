@@ -17,6 +17,22 @@ func PanicOnErr(err error) {
 	}
 }
 
+const MaxInt = int(^uint(0) >> 1)
+
+func IntMax(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func IntMin(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func Readfile(day int) string {
 	filename := fmt.Sprintf("day%02d/input.txt", day)
 	file, err := os.Open(filename)

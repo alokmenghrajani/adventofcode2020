@@ -7,6 +7,7 @@ import (
 	"github.com/alokmenghrajani/adventofcode2020/day02"
 	"github.com/alokmenghrajani/adventofcode2020/day03"
 	"github.com/alokmenghrajani/adventofcode2020/day04"
+	"github.com/alokmenghrajani/adventofcode2020/day05"
 	"github.com/alokmenghrajani/adventofcode2020/utils"
 	"os"
 	"strconv"
@@ -31,6 +32,9 @@ func main() {
 	case 4:
 		fmt.Printf("part 1: %d\n", day04.Part1(utils.Readfile(d)))
 		fmt.Printf("part 2: %d\n", day04.Part2(utils.Readfile(d)))
+	case 5:
+		fmt.Printf("part 1: %d\n", day05.Part1(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day05.Part2(utils.Readfile(d)))
 	default:
 		panic(errors.New(fmt.Sprintf("no such day: %d", d)))
 	}
@@ -39,7 +43,7 @@ func main() {
 // Reads day from os.Args.
 func day() int {
 	if len(os.Args) == 1 {
-		return 4
+		return 5
 	}
 	day, err := strconv.Atoi(os.Args[1])
 	utils.PanicOnErr(err)
