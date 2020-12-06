@@ -2,18 +2,15 @@ package day03
 
 import (
 	"github.com/alokmenghrajani/adventofcode2020/utils"
-	"strings"
 )
 
 func Part1(input string) uint {
-	lines := strings.Split(input, "\n")
-	grid := utils.Grid(lines)
+	grid := utils.InputToGrid(input)
 	return collisions(grid, 3, 1)
 }
 
 func Part2(input string) uint {
-	lines := strings.Split(input, "\n")
-	grid := utils.Grid(lines)
+	grid := utils.InputToGrid(input)
 	deltas := [][]int{
 		{1, 1},
 		{3, 1},

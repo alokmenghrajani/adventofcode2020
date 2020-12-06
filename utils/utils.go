@@ -18,6 +18,7 @@ func PanicOnErr(err error) {
 }
 
 const MaxInt = int(^uint(0) >> 1)
+const MinInt = ^MaxInt
 
 func IntMax(a, b int) int {
 	if a > b {
@@ -33,6 +34,47 @@ func IntMin(a, b int) int {
 	return b
 }
 
+// Like strconv.Atoi but returns a default value on error
+func Atoi(s string, fallback int) int {
+	v, err := strconv.Atoi(s)
+	if err != nil {
+		return fallback
+	}
+	return v
+}
+
+// Returns key from map[T]int which has the max value
+func MapFindMax(m interface{}) interface{} {
+	var maxK interface{} = nil
+	var maxV = MinInt
+	iter := reflect.ValueOf(m).MapRange()
+	for iter.Next() {
+		k := iter.Key()
+		v := int(iter.Value().Int())
+		if v > maxV {
+			maxV = v
+			maxK = k.Interface()
+		}
+	}
+	return maxK
+}
+
+// Returns key from map[T]int which has the min value
+func MapFindMin(m interface{}) interface{} {
+	var minK interface{} = nil
+	var minV = MaxInt
+	iter := reflect.ValueOf(m).MapRange()
+	for iter.Next() {
+		k := iter.Key()
+		v := int(iter.Value().Int())
+		if v < minV {
+			minV = v
+			minK = k.Interface()
+		}
+	}
+	return minK
+}
+
 func Readfile(day int) string {
 	filename := fmt.Sprintf("day%02d/input.txt", day)
 	file, err := os.Open(filename)
@@ -46,33 +88,21 @@ func Readfile(day int) string {
 	return strings.TrimSuffix(string(contents), "\n")
 }
 
-func Grid(input []string) [][]byte {
-	rows := len(input)
+func InputToGrid(input string) [][]byte {
+	rows := strings.Split(input, "\n")
 
-	r := make([][]byte, rows)
+	r := make([][]byte, len(rows))
 	for i := range r {
-		r[i] = []byte(input[i])
+		r[i] = []byte(rows[i])
 	}
 
 	return r
 }
 
-func StringsToInts(input []string) []int {
-	numbers := make([]int, len(input))
-	for i, line := range input {
-		n, err := strconv.Atoi(line)
-		if err != nil {
-			n = 0
-		}
-		numbers[i] = n
-	}
-	return numbers
-}
-
-func ParseToStruct(re *regexp.Regexp, input string, target interface{}) {
+func ParseToStruct(re *regexp.Regexp, input string, target interface{}) bool {
 	m := re.FindStringSubmatch(input)
 	if m == nil {
-		return
+		return false
 	}
 
 	var useOffset bool
@@ -114,4 +144,5 @@ func ParseToStruct(re *regexp.Regexp, input string, target interface{}) {
 			panic(fmt.Sprintf("unknown kind: %s", field.Kind()))
 		}
 	}
+	return true
 }

@@ -1,8 +1,8 @@
 package day04
 
 import (
+	"github.com/alokmenghrajani/adventofcode2020/utils"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -44,32 +44,32 @@ func Part2(input string) uint {
 				continue
 			}
 			if key == "byr" {
-				t, err := strconv.Atoi(val)
-				if err != nil || t < 1920 || t > 2002 {
+				t := utils.Atoi(val, 0)
+				if t < 1920 || t > 2002 {
 					continue
 				}
 			}
 			if key == "iyr" {
-				t, err := strconv.Atoi(val)
-				if err != nil || t < 2010 || t > 2020 {
+				t := utils.Atoi(val, 0)
+				if t < 2010 || t > 2020 {
 					continue
 				}
 			}
 			if key == "eyr" {
-				t, err := strconv.Atoi(val)
-				if err != nil || t < 2020 || t > 2030 {
+				t := utils.Atoi(val, 0)
+				if t < 2020 || t > 2030 {
 					continue
 				}
 			}
 			if key == "hgt" {
 				if strings.HasSuffix(val, "cm") {
-					t, err := strconv.Atoi(val[:len(val)-2])
-					if err != nil || t < 150 || t > 193 {
+					t := utils.Atoi(val[:len(val)-2], 0)
+					if t < 150 || t > 193 {
 						continue
 					}
 				} else if strings.HasSuffix(val, "in") {
-					t, err := strconv.Atoi(val[:len(val)-2])
-					if err != nil || t < 59 || t > 76 {
+					t := utils.Atoi(val[:len(val)-2], 0)
+					if t < 59 || t > 76 {
 						continue
 					}
 				} else {
