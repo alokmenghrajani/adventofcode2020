@@ -3,14 +3,16 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
+
 	"github.com/alokmenghrajani/adventofcode2020/day01"
 	"github.com/alokmenghrajani/adventofcode2020/day02"
 	"github.com/alokmenghrajani/adventofcode2020/day03"
 	"github.com/alokmenghrajani/adventofcode2020/day04"
 	"github.com/alokmenghrajani/adventofcode2020/day05"
 	"github.com/alokmenghrajani/adventofcode2020/day06"
+	"github.com/alokmenghrajani/adventofcode2020/day07"
 	"github.com/alokmenghrajani/adventofcode2020/utils"
-	"os"
 )
 
 // Usage: go run main.go <NN>
@@ -38,6 +40,9 @@ func main() {
 	case 6:
 		fmt.Printf("part 1: %d\n", day06.Part1(utils.Readfile(d)))
 		fmt.Printf("part 2: %d\n", day06.Part2(utils.Readfile(d)))
+	case 7:
+		fmt.Printf("part 1: %d\n", day07.Part1(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day07.Part2(utils.Readfile(d)))
 	default:
 		panic(errors.New(fmt.Sprintf("no such day: %d", d)))
 	}
@@ -46,7 +51,7 @@ func main() {
 // Reads day from os.Args.
 func day() int {
 	if len(os.Args) == 1 {
-		return 6
+		return 7
 	}
 	day := utils.Atoi(os.Args[1], -1)
 	return day

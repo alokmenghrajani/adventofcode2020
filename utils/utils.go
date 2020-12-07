@@ -43,6 +43,12 @@ func Atoi(s string, fallback int) int {
 	return v
 }
 
+func MustAtoi(s string) int {
+	v, err := strconv.Atoi(s)
+	PanicOnErr(err)
+	return v
+}
+
 // Returns key from map[T]int which has the max value
 func MapFindMax(m interface{}) interface{} {
 	var maxK interface{} = nil
