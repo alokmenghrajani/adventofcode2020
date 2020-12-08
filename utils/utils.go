@@ -152,3 +152,11 @@ func ParseToStruct(re *regexp.Regexp, input string, target interface{}) bool {
 	}
 	return true
 }
+
+func CharToLower(c byte) byte {
+	return strings.ToLower(string(c))[0]
+}
+
+func CharToUpper(c byte) byte {
+	return strings.ToUpper(string(c))[0]
+}
