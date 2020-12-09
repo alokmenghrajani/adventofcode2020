@@ -94,17 +94,6 @@ func Readfile(day int) string {
 	return strings.TrimSuffix(string(contents), "\n")
 }
 
-func InputToGrid(input string) [][]byte {
-	rows := strings.Split(input, "\n")
-
-	r := make([][]byte, len(rows))
-	for i := range r {
-		r[i] = []byte(rows[i])
-	}
-
-	return r
-}
-
 func ParseToStruct(re *regexp.Regexp, input string, target interface{}) bool {
 	m := re.FindStringSubmatch(input)
 	if m == nil {

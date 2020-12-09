@@ -1,16 +1,16 @@
 package day03
 
 import (
-	"github.com/alokmenghrajani/adventofcode2020/utils"
+	"github.com/alokmenghrajani/adventofcode2020/utils/inputs"
 )
 
 func Part1(input string) uint {
-	grid := utils.InputToGrid(input)
+	grid := inputs.ToGrid(input)
 	return collisions(grid, 3, 1)
 }
 
 func Part2(input string) uint {
-	grid := utils.InputToGrid(input)
+	grid := inputs.ToGrid(input)
 	deltas := [][]int{
 		{1, 1},
 		{3, 1},
