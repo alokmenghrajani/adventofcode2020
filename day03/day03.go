@@ -1,6 +1,7 @@
 package day03
 
 import (
+	"github.com/alokmenghrajani/adventofcode2020/utils/grids"
 	"github.com/alokmenghrajani/adventofcode2020/utils/inputs"
 )
 
@@ -25,19 +26,18 @@ func Part2(input string) uint {
 	return r
 }
 
-func collisions(grid [][]byte, dx, dy int) uint {
+func collisions(grid *grids.Grid, dx, dy int) uint {
 	x := 0
 	y := 0
 	c := uint(0)
-	cols := len(grid[0])
-	for {
+	_, cols := grid.SizeX()
+	_, rows := grid.SizeY()
+	for y <= rows {
 		x += dx
 		y += dy
-		if y >= len(grid) {
-			return c
-		}
-		if grid[y][x%cols] == '#' {
+		if grid.Get(x%(cols+1), y) == '#' {
 			c++
 		}
 	}
+	return c
 }

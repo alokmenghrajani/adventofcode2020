@@ -3,6 +3,8 @@ package inputs
 import (
 	"strings"
 
+	"github.com/alokmenghrajani/adventofcode2020/utils/grids"
+
 	"github.com/alokmenghrajani/adventofcode2020/utils"
 )
 
@@ -14,13 +16,14 @@ func ToInts(input string) []int {
 	return r
 }
 
-func ToGrid(input string) [][]byte {
-	rows := strings.Split(input, "\n")
+func ToGrid(input string) *grids.Grid {
+	grid := grids.NewGrid()
 
-	r := make([][]byte, len(rows))
-	for i := range r {
-		r[i] = []byte(rows[i])
+	for y, line := range strings.Split(input, "\n") {
+		for x, rune := range line {
+			grid.Set(x, y, rune)
+		}
 	}
 
-	return r
+	return grid
 }
