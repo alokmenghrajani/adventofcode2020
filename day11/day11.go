@@ -13,7 +13,7 @@ func Part1(input string) int {
 
 	for done := false; !done; {
 		done = true
-		nextGrid := grids.NewGrid()
+		nextGrid := grids.NewGrid(0)
 
 		for i := 0; i <= maxX; i++ {
 			for j := 0; j <= maxY; j++ {
@@ -66,7 +66,7 @@ func Part2(input string) int {
 
 	for done := false; !done; {
 		done = true
-		nextGrid := grids.NewGrid()
+		nextGrid := grids.NewGrid(0)
 
 		for i := 0; i <= maxX; i++ {
 			for j := 0; j <= maxY; j++ {

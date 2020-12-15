@@ -17,7 +17,7 @@ func ToInts(input string) []int {
 }
 
 func ToGrid(input string) *grids.Grid {
-	grid := grids.NewGrid()
+	grid := grids.NewGrid(0)
 
 	for y, line := range strings.Split(input, "\n") {
 		for x, rune := range line {

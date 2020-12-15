@@ -11,11 +11,13 @@ import (
 type Grid struct {
 	minX, maxX, minY, maxY int
 	data                   map[string]interface{}
+	empty                  interface{}
 }
 
-func NewGrid() *Grid {
+func NewGrid(empty interface{}) *Grid {
 	return &Grid{
-		data: map[string]interface{}{},
+		data:  map[string]interface{}{},
+		empty: empty,
 	}
 }
 
@@ -31,7 +33,7 @@ func (g *Grid) Get(x, y int) interface{} {
 	k := key(x, y)
 	v, ok := g.data[k]
 	if !ok {
-		return rune(0)
+		return g.empty
 	}
 	return v
 }
