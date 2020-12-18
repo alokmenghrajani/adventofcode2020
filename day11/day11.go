@@ -7,13 +7,13 @@ import (
 )
 
 func Part1(input string) int {
-	grid := inputs.ToGrid(input)
+	grid := inputs.ToGrid(input, 'L')
 	_, maxX := grid.SizeX()
 	_, maxY := grid.SizeY()
 
 	for done := false; !done; {
 		done = true
-		nextGrid := grids.NewGrid(0)
+		nextGrid := grids.NewGrid('L')
 
 		for i := 0; i <= maxX; i++ {
 			for j := 0; j <= maxY; j++ {
@@ -60,13 +60,13 @@ func countPart1(grid *grids.Grid, x, y int) int {
 }
 
 func Part2(input string) int {
-	grid := inputs.ToGrid(input)
+	grid := inputs.ToGrid(input, 'L')
 	_, maxX := grid.SizeX()
 	_, maxY := grid.SizeY()
 
 	for done := false; !done; {
 		done = true
-		nextGrid := grids.NewGrid(0)
+		nextGrid := grids.NewGrid('L')
 
 		for i := 0; i <= maxX; i++ {
 			for j := 0; j <= maxY; j++ {
@@ -111,7 +111,7 @@ func countPart2(grid *grids.Grid, x, y int) int {
 				if v == '#' {
 					r++
 					break
-				} else if v != '.' {
+				} else if v == 'L' {
 					break
 				}
 			}
@@ -119,32 +119,3 @@ func countPart2(grid *grids.Grid, x, y int) int {
 	}
 	return r
 }
-
-//
-//	for _, line := range strings.Split(input, "\n") {
-//		fmt.Println(line)
-//	}
-//	//	d := 1
-//	//	for {
-//	//		ty := y + i*d
-//	//		tx := x + j*d
-//	//		if ty < 0 || ty >= len(grid) || tx < 0 || tx >= len(grid[0]) {
-//	//			break
-//	//		}
-//	//		if grid[ty][tx] == '#' {
-//	//			r++
-//	//			break
-//	//		}
-//	//		if grid[ty][tx] == 'L' {
-//	//			break
-//	//		}
-//	//		d++
-//	//	}
-//	//}
-//	//}
-//	//return r
-//	//numbers := inputs.ToInts(input)
-//	//sort.Slice(numbers, func(i, j int) bool { return numbers[i] < numbers[j] })
-//
-//	return 0
-//}

@@ -21,6 +21,50 @@ func Part1(input string) int {
 		re2 := regexp.MustCompile(`mem\[(\d+)\] = (\d+)$`)
 		match = re2.FindStringSubmatch(line)
 		if len(match) > 0 {
+			memory[utils.MustAtoi(match[1])] = compute(mask, utils.MustAtoi(match[2]))
+		} else {
+			panic("here")
+		}
+	}
+
+	sum := 0
+	for _, v := range memory {
+		sum += v
+	}
+	return sum
+}
+
+func compute(mask string, v int) int {
+	for i := 0; i < len(mask); i++ {
+		if mask[i] == 'X' {
+			continue
+		}
+		if mask[i] == '0' {
+			m := ^(1 << (35 - i))
+			v = v & m
+		}
+		if mask[i] == '1' {
+			m := 1 << (35 - i)
+			v = v | m
+		}
+	}
+	return v
+}
+
+func Part2(input string) int {
+	mask := ""
+	memory := map[int]int{}
+	for _, line := range strings.Split(input, "\n") {
+		re1 := regexp.MustCompile(`mask = (.*)$`)
+		match := re1.FindStringSubmatch(line)
+		if len(match) > 0 {
+			mask = match[1]
+			continue
+		}
+
+		re2 := regexp.MustCompile(`mem\[(\d+)\] = (\d+)$`)
+		match = re2.FindStringSubmatch(line)
+		if len(match) > 0 {
 			ms := compute2(mask, utils.MustAtoi(match[1]), 0)
 			for _, v2 := range ms {
 				memory[v2] = utils.MustAtoi(match[2])
@@ -63,36 +107,3 @@ func compute2(mask string, v int, offset int) []int {
 	}
 	panic("unreach")
 }
-
-func compute(mask string, v int) int {
-	for i := 0; i < len(mask); i++ {
-		if mask[i] == 'X' {
-			continue
-		}
-		if mask[i] == '0' {
-			m := ^(1 << (35 - i))
-			v = v & m
-		}
-		if mask[i] == '1' {
-			m := 1 << (35 - i)
-			v = v | m
-		}
-	}
-	return v
-}
-
-//		// mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
-//		//mem[8] = 11
-//		//mem[7] = 101
-//		//mem[8] = 0
-//		fmt.Println(line)
-//	}
-//	return 0
-//}
-//
-////func Part2(input string) int {
-////	for _, line := range strings.Split(input, "\n") {
-////		fmt.Printf("%s\n", line)
-////	}
-////	return 0
-////}

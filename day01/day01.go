@@ -1,9 +1,10 @@
 package day01
 
 import (
-	"github.com/alokmenghrajani/adventofcode2020/utils"
 	"regexp"
 	"strings"
+
+	"github.com/alokmenghrajani/adventofcode2020/utils"
 )
 
 type number struct {
@@ -16,7 +17,7 @@ func Part1(input string) int {
 	var numbers []number
 	for _, line := range lines {
 		var n number
-		re := regexp.MustCompile(`\d+`)
+		re := regexp.MustCompile(`(\d+)`)
 		if utils.ParseToStruct(re, line, &n) {
 			numbers = append(numbers, n)
 		}
@@ -38,7 +39,7 @@ func Part2(input string) int {
 	var numbers []number
 	for _, line := range lines {
 		var n number
-		re := regexp.MustCompile(`\d+`)
+		re := regexp.MustCompile(`(\d+)`)
 		if utils.ParseToStruct(re, line, &n) {
 			numbers = append(numbers, n)
 		}

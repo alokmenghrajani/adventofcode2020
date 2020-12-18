@@ -71,10 +71,10 @@ func main() {
 		fmt.Printf("part 2: %d\n", day12.Part2(utils.Readfile(d)))
 	case 13:
 		fmt.Printf("part 1: %d\n", day13.Part1(utils.Readfile(d)))
-		//fmt.Printf("part 2: %d\n", day13.Part2(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day13.Part2(utils.Readfile(d)))
 	case 14:
 		fmt.Printf("part 1: %d\n", day14.Part1(utils.Readfile(d)))
-		//fmt.Printf("part 2: %d\n", day14.Part2(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day14.Part2(utils.Readfile(d)))
 	case 15:
 		fmt.Printf("part 1: %d\n", day15.Part1(utils.Readfile(d)))
 		fmt.Printf("part 2: %d\n", day15.Part2(utils.Readfile(d)))
