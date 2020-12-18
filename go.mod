@@ -9,4 +9,5 @@ require (
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/stretchr/testify v1.6.1
+	github.com/yhirose/go-peg v0.0.0-20190710015414-7eb2cf046928
 )
