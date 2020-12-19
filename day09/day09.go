@@ -6,7 +6,7 @@ import (
 )
 
 func Part1(nPrevious int, input string) int {
-	n := inputs.ToInts(input)
+	n := inputs.ToInts(input, "\n")
 	for i := nPrevious; i < len(n); i++ {
 		ok := true
 	outer:
@@ -31,7 +31,7 @@ func Part1(nPrevious int, input string) int {
 func Part2(nPrevious int, input string) int {
 	target := Part1(nPrevious, input)
 
-	n := inputs.ToInts(input)
+	n := inputs.ToInts(input, "\n")
 
 	s := 2
 	for {

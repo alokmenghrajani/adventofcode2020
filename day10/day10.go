@@ -8,7 +8,7 @@ import (
 )
 
 func Part1(input string) int {
-	numbers := inputs.ToInts(input)
+	numbers := inputs.ToInts(input, "\n")
 	sort.Slice(numbers, func(i, j int) bool { return numbers[i] < numbers[j] })
 
 	// append max
@@ -32,7 +32,7 @@ func Part1(input string) int {
 }
 
 func Part2(input string) int {
-	numbers := inputs.ToInts(input)
+	numbers := inputs.ToInts(input, "\n")
 	sort.Slice(numbers, func(i, j int) bool { return numbers[i] < numbers[j] })
 
 	// append max

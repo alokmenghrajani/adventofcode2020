@@ -8,10 +8,12 @@ import (
 	"github.com/alokmenghrajani/adventofcode2020/utils"
 )
 
-func ToInts(input string) []int {
+func ToInts(input string, sep string) []int {
 	var r []int
-	for _, line := range strings.Split(input, "\n") {
-		r = append(r, utils.MustAtoi(line))
+	for _, line := range strings.Split(input, sep) {
+		if line != "" {
+			r = append(r, utils.MustAtoi(line))
+		}
 	}
 	return r
 }
