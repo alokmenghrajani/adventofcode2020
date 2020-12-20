@@ -62,6 +62,16 @@ func (g *Grid) Print() {
 	fmt.Println("")
 }
 
+func (g *Grid) PrintN() {
+	for j := g.minY; j <= g.maxY; j++ {
+		for i := g.minX; i <= g.maxX; i++ {
+			fmt.Printf("%d ", g.Get(i, j))
+		}
+		fmt.Println("")
+	}
+	fmt.Println("")
+}
+
 func key(x, y int) string {
 	return fmt.Sprintf("%d-%d", x, y)
 }
