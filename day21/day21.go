@@ -1,207 +1,137 @@
 package day21
 
 import (
+	"fmt"
 	"sort"
 	"strings"
+
+	"github.com/crillab/gophersat/bf"
 )
 
 type ingredient string
 type allergen string
 
-type blah struct {
+type food struct {
 	ingredients map[ingredient]bool
 	allergens   map[allergen]bool
 }
 
+var allIngredients map[ingredient]int
+var allAllergens map[allergen]bool
+var foods []food
+
 func Part1(input string) int {
-	allIngredients := map[ingredient]bool{}
-	allAllergens := map[allergen]bool{}
-	var blahs []blah
-	for _, line := range strings.Split(input, "\n") {
-		l := strings.Split(line, " (contains ")
-		b := blah{
-			ingredients: map[ingredient]bool{},
-			allergens:   map[allergen]bool{},
-		}
-		ingredients := strings.Split(l[0], " ")
-		for _, v := range ingredients {
-			b.ingredients[ingredient(v)] = true
-			allIngredients[ingredient(v)] = true
-		}
-
-		l[1] = l[1][0 : len(l[1])-1]
-		allergens := strings.Split(l[1], ", ")
-		for _, v := range allergens {
-			b.allergens[allergen(v)] = true
-			allAllergens[allergen(v)] = true
-		}
-
-		blahs = append(blahs, b)
-	}
-
-	safe := map[ingredient]bool{}
-	for i, _ := range allIngredients {
-		safe[i] = true
-	}
-
-	for a, _ := range allAllergens {
-		potentialIngredients := map[ingredient]bool{}
-		for i, _ := range allIngredients {
-			potentialIngredients[i] = true
-		}
-
-		for _, b := range blahs {
-			if !b.allergens[a] {
-				continue
-			}
-			for i, _ := range potentialIngredients {
-				if !b.ingredients[i] {
-					delete(potentialIngredients, i)
-				}
-			}
-		}
-
-		for i, _ := range potentialIngredients {
-			delete(safe, i)
-		}
-	}
-
+	solution := parseAndSolve(input)
 	r := 0
-	for i, _ := range safe {
-		t := 0
-		for _, b := range blahs {
-			if b.ingredients[i] {
-				t++
-			}
+	for i, _ := range allIngredients {
+		if solution[fmt.Sprintf("%s-safe", i)] {
+			r += allIngredients[i]
 		}
-		r += t
 	}
 	return r
 }
 
 func Part2(input string) string {
-	allIngredients := map[ingredient]bool{}
-	allAllergens := map[allergen]bool{}
-	var blahs []blah
+	solution := parseAndSolve(input)
+
+	// sort all the allergens
+	var keys []string
+	for a, _ := range allAllergens {
+		keys = append(keys, string(a))
+	}
+	sort.Strings(keys)
+
+	// emit r
+	var r []string
+	for _, a := range keys {
+		for i, _ := range allIngredients {
+			if solution[fmt.Sprintf("%s-%s", i, a)] {
+				r = append(r, string(i))
+			}
+		}
+	}
+	return strings.Join(r, ",")
+}
+
+// Use a SAT solver to figure out which ingredient maps to which allergen. SAT solvers work with boolean variables, so
+// we have to do some conversion. Let's say we have 4 ingredients (I1 thru I4) and 3 allergens (A1 thru A3), we can
+// create the following constraints where In-Am are new boolean variables:
+//
+// each ingredient maps to zero or more allergens:
+//   Unique(I1-A1, I1-A2, I1-A3, I1-safe)
+//   Unique(I2-A1, I2-A2, I2-A3, I2-safe)
+//   ...
+//
+// each allergen maps to one ingredient:
+//   Unique(I1-A1, I2-A1, I3-A1, I4-A1)
+//   Unique(I1-A2, I2-A2, I3-A2, I4-A2)
+//   ...
+//
+// A food entry, such as: "I1 I2 I3 (contains A1 A2)" then gets mapped to:
+//   Unique(I1-A1, I2-A1, I3-A1)
+//   Unique(I1-A2, I2-A2, I3-A2)
+func parseAndSolve(input string) map[string]bool {
+	allIngredients = map[ingredient]int{}
+	allAllergens = map[allergen]bool{}
+	foods = []food{}
+
 	for _, line := range strings.Split(input, "\n") {
 		l := strings.Split(line, " (contains ")
-		b := blah{
+		f := food{
 			ingredients: map[ingredient]bool{},
 			allergens:   map[allergen]bool{},
 		}
 		ingredients := strings.Split(l[0], " ")
 		for _, v := range ingredients {
-			b.ingredients[ingredient(v)] = true
-			allIngredients[ingredient(v)] = true
+			f.ingredients[ingredient(v)] = true
+			allIngredients[ingredient(v)]++
 		}
 
-		l[1] = l[1][0 : len(l[1])-1]
+		l[1] = strings.TrimSuffix(l[1], ")")
 		allergens := strings.Split(l[1], ", ")
 		for _, v := range allergens {
-			b.allergens[allergen(v)] = true
+			f.allergens[allergen(v)] = true
 			allAllergens[allergen(v)] = true
 		}
 
-		blahs = append(blahs, b)
+		foods = append(foods, f)
 	}
 
-	safe := map[ingredient]bool{}
+	model := bf.True
+
 	for i, _ := range allIngredients {
-		safe[i] = true
+		var vars []string
+		for a, _ := range allAllergens {
+			vars = append(vars, fmt.Sprintf("%s-%s", i, a))
+		}
+		// an ingredient is either safe or is tied to exactly one allergen
+		vars = append(vars, fmt.Sprintf("%s-safe", i))
+		model = bf.And(model, bf.Unique(vars...))
 	}
 
 	for a, _ := range allAllergens {
-		potentialIngredients := map[ingredient]bool{}
+		var vars []string
 		for i, _ := range allIngredients {
-			potentialIngredients[i] = true
+			vars = append(vars, fmt.Sprintf("%s-%s", i, a))
 		}
+		// an allergen is tied to exactly one ingredient
+		model = bf.And(model, bf.Unique(vars...))
+	}
 
-		for _, b := range blahs {
-			if !b.allergens[a] {
-				continue
+	// convert foods into constraints
+	for _, f := range foods {
+		for a, _ := range f.allergens {
+			var vars []string
+			for i, _ := range f.ingredients {
+				vars = append(vars, fmt.Sprintf("%s-%s", i, a))
 			}
-			for i, _ := range potentialIngredients {
-				if !b.ingredients[i] {
-					delete(potentialIngredients, i)
-				}
-			}
-		}
-
-		for i, _ := range potentialIngredients {
-			delete(safe, i)
+			model = bf.And(model, bf.Unique(vars...))
 		}
 	}
 
-	r := 0
-	for i, _ := range safe {
-		t := 0
-		for _, b := range blahs {
-			if b.ingredients[i] {
-				t++
-			}
-		}
-		r += t
+	solution := bf.Solve(model)
+	if solution == nil {
+		panic("unsat?")
 	}
-
-	type pair struct {
-		i ingredient
-		a allergen
-	}
-
-	var solution []pair
-	usedIngredients := map[ingredient]bool{}
-	usedAllergens := map[allergen]bool{}
-	done := false
-	for !done {
-		done = true
-		for a, _ := range allAllergens {
-			if usedAllergens[a] {
-				continue
-			}
-			potentialIngredients := map[ingredient]bool{}
-			for i, _ := range allIngredients {
-				if safe[i] {
-					continue
-				}
-				if usedIngredients[i] {
-					continue
-				}
-				potentialIngredients[i] = true
-			}
-
-			for _, b := range blahs {
-				if !b.allergens[a] {
-					continue
-				}
-				for i, _ := range potentialIngredients {
-					if !b.ingredients[i] {
-						delete(potentialIngredients, i)
-					}
-				}
-			}
-			if len(potentialIngredients) == 1 {
-				var k ingredient
-				for k, _ = range potentialIngredients {
-					break
-				}
-				usedAllergens[a] = true
-				usedIngredients[k] = true
-				solution = append(solution, pair{k, a})
-				done = false
-			}
-		}
-	}
-	if len(solution) != len(allAllergens) {
-		panic("no solution")
-	}
-
-	sort.Slice(solution, func(i, j int) bool {
-		return solution[i].a < solution[j].a
-	})
-
-	var t []string
-	for _, p := range solution {
-		t = append(t, string(p.i))
-	}
-	return strings.Join(t, ",")
+	return solution
 }
