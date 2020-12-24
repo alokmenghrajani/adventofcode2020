@@ -26,6 +26,9 @@ import (
 	"github.com/alokmenghrajani/adventofcode2020/day19"
 	"github.com/alokmenghrajani/adventofcode2020/day20"
 	"github.com/alokmenghrajani/adventofcode2020/day21"
+	"github.com/alokmenghrajani/adventofcode2020/day22"
+	"github.com/alokmenghrajani/adventofcode2020/day23"
+	"github.com/alokmenghrajani/adventofcode2020/day24"
 	"github.com/alokmenghrajani/adventofcode2020/utils"
 )
 
@@ -99,6 +102,15 @@ func main() {
 	case 21:
 		fmt.Printf("part 1: %d\n", day21.Part1(utils.Readfile(d)))
 		fmt.Printf("part 2: %s\n", day21.Part2(utils.Readfile(d)))
+	case 22:
+		fmt.Printf("part 1: %d\n", day22.Part1(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day22.Part2(utils.Readfile(d)))
+	case 23:
+		fmt.Printf("part 1: %s\n", day23.Part1(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day23.Part2(utils.Readfile(d)))
+	case 24:
+		fmt.Printf("part 1: %d\n", day24.Part1(utils.Readfile(d)))
+		fmt.Printf("part 2: %d\n", day24.Part2(utils.Readfile(d)))
 	default:
 		panic(errors.New(fmt.Sprintf("no such day: %d", d)))
 	}
@@ -107,7 +119,7 @@ func main() {
 // Reads day from os.Args.
 func day() int {
 	if len(os.Args) == 1 {
-		return 21
+		return 24
 	}
 	day := utils.Atoi(os.Args[1], -1)
 	return day

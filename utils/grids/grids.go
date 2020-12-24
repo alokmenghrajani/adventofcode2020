@@ -45,11 +45,22 @@ func (g *Grid) GetRune(x, y int) rune {
 
 func (g *Grid) Set(x, y int, v interface{}) {
 	k := key(x, y)
-	g.data[k] = v
-	g.minX = utils.IntMin(g.minX, x)
-	g.maxX = utils.IntMax(g.maxX, x)
-	g.minY = utils.IntMin(g.minY, y)
-	g.maxY = utils.IntMax(g.maxY, y)
+	current, ok := g.data[k]
+	if ok && v == current {
+		return
+	}
+	if !ok && v == g.empty {
+		return
+	}
+	if v == g.empty {
+		delete(g.data, k)
+	} else {
+		g.data[k] = v
+		g.minX = utils.IntMin(g.minX, x)
+		g.maxX = utils.IntMax(g.maxX, x)
+		g.minY = utils.IntMin(g.minY, y)
+		g.maxY = utils.IntMax(g.maxY, y)
+	}
 }
 
 func (g *Grid) Print() {
@@ -73,5 +84,5 @@ func (g *Grid) PrintN() {
 }
 
 func key(x, y int) string {
-	return fmt.Sprintf("%d-%d", x, y)
+	return fmt.Sprintf("%d:%d", x, y)
 }
